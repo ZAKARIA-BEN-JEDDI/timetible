@@ -238,7 +238,7 @@ $allSchedules = $generator->generateAllSchedules();
 </head>
 <body>
     <h1>Emplois du temps - Toutes les classes</h1>
-    
+    </body>
     <?php foreach ($allSchedules as $classId => $data): ?>
     <div class="schedule-container">
         <h2>Classe: <?= htmlspecialchars($data['class_name']) ?></h2>
@@ -283,5 +283,4 @@ $allSchedules = $generator->generateAllSchedules();
         </div>
     </div>
     <?php endforeach; ?>
-</body>
-</html>
+    </html>
