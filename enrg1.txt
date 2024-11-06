@@ -1,0 +1,47 @@
+<body>
+    <h1>Emplois du temps - Toutes les classes</h1>
+    </body>
+    <?php foreach ($allSchedules as $classId => $data): ?>
+    <div class="schedule-container">
+        <h2>Classe: <?= htmlspecialchars($data['class_name']) ?></h2>
+        <table>
+            <tr>
+                <th>Horaire</th>
+                <?php foreach (array_keys($data['schedule']) as $day): ?>
+                    <th><?= $day ?></th>
+                <?php endforeach; ?>
+            </tr>
+            <?php 
+            $timeSlots = array_keys(reset($data['schedule']));
+            foreach ($timeSlots as $timeSlot): 
+            ?>
+            <tr>
+                <td class="time-slot"><?= $timeSlot ?></td>
+                <?php foreach ($data['schedule'] as $day => $slots): ?>
+                    <td class="<?= empty($slots[$timeSlot]) ? 'empty-slot' : '' ?>">
+                        <?php if (!empty($slots[$timeSlot])): ?>
+                            <div class="class-info">
+                                <div class="matiere"><?= htmlspecialchars($slots[$timeSlot]['matiere']) ?></div>
+                                <div class="professeur"><?= htmlspecialchars($slots[$timeSlot]['professeur']) ?></div>
+                                <div class="salle"><?= htmlspecialchars($slots[$timeSlot]['salle']) ?></div>
+                            </div>
+                        <?php else: ?>
+                            Libre
+                        <?php endif; ?>
+                    </td>
+                <?php endforeach; ?>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+        <div class="total-hours">
+            <?php
+            foreach ($data['schedule'] as $day => $slots) {
+                $totalHours = array_reduce($slots, function($carry, $slot) {
+                    return $carry + ($slot ? $slot['duration'] / 60 : 0);
+                }, 0);
+                echo "$day: " . number_format($totalHours, 1) . " heures<br>";
+            }
+            ?>
+        </div>
+    </div>
+    <?php endforeach; ?>
